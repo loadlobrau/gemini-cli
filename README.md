@@ -1,4 +1,4 @@
-# Gemini CLI
+# Chat CLI (Gemini CLI compatible)
 
 [![Gemini CLI CI](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml)
 [![Gemini CLI E2E (Chained)](https://github.com/google-gemini/gemini-cli/actions/workflows/chained_e2e.yml/badge.svg)](https://github.com/google-gemini/gemini-cli/actions/workflows/chained_e2e.yml)
@@ -8,9 +8,7 @@
 
 ![Gemini CLI Screenshot](./docs/assets/gemini-screenshot.png)
 
-Gemini CLI is an open-source AI agent that brings the power of Gemini directly
-into your terminal. It provides lightweight access to Gemini, giving you the
-most direct path from your prompt to our model.
+Chat CLI is an open-source AI agent that keeps Gemini CLI compatibility while adding chat/chat-cli command aliases for terminal-first usage. It provides lightweight access to Gemini-compatible APIs and can be launched with `gemini`, `chat`, or `chat-cli`.
 
 Learn all about Gemini CLI in our [documentation](https://geminicli.com/docs/).
 
@@ -40,12 +38,22 @@ for recommended system specifications and a detailed installation guide.
 ```bash
 # Using npx (no installation required)
 npx @google/gemini-cli
+# or
+npx @google/gemini-cli chat
 ```
 
 #### Install globally with npm
 
 ```bash
 npm install -g @google/gemini-cli
+```
+
+Then launch with any compatible command name:
+
+```bash
+gemini
+chat
+chat-cli
 ```
 
 #### Install globally with Homebrew (macOS/Linux)
@@ -69,6 +77,14 @@ conda activate gemini_env
 
 # Install Gemini CLI globally via npm (inside the environment)
 npm install -g @google/gemini-cli
+```
+
+Then launch with any compatible command name:
+
+```bash
+gemini
+chat
+chat-cli
 ```
 
 ## Release Cadence and Tags
@@ -175,7 +191,7 @@ export GOOGLE_CLOUD_PROJECT="YOUR_PROJECT_ID"
 gemini
 ```
 
-### Option 2: Gemini API Key
+### Option 2: Gemini-compatible API Key (including OpenAI-compatible gateways)
 
 **✨ Best for:** Developers who need specific model control or paid tier access
 
@@ -188,7 +204,11 @@ gemini
 ```bash
 # Get your key from https://aistudio.google.com/apikey
 export GEMINI_API_KEY="YOUR_API_KEY"
-gemini
+# compatibility alias also supported:
+export OPENAI_API_KEY="YOUR_API_KEY"
+# optional if using a custom OpenAI-compatible endpoint:
+export OPENAI_BASE_URL="https://your-endpoint.example/v1"
+chat
 ```
 
 ### Option 3: Vertex AI

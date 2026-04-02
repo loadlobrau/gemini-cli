@@ -76,7 +76,9 @@
     "minimatch": "^10.2.2"
   },
   "bin": {
-    "gemini": "bundle/gemini.js"
+    "gemini": "bundle/gemini.js",
+    "chat": "bundle/gemini.js",
+    "chat-cli": "bundle/gemini.js"
   },
   "files": [
     "bundle/",

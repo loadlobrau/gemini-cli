@@ -104,11 +104,16 @@ export async function parseArguments(
 ): Promise<CliArgs> {
   const rawArgv = hideBin(process.argv);
   const startupMessages: string[] = [];
+  const invokedBinary = process.argv[1]?.split(/[\\/]/).pop() ?? 'gemini';
+  const scriptName =
+    invokedBinary === 'chat' || invokedBinary === 'chat-cli'
+      ? invokedBinary
+      : 'gemini';
   const yargsInstance = yargs(rawArgv)
     .locale('en')
-    .scriptName('gemini')
+    .scriptName(scriptName)
     .usage(
-      'Usage: gemini [options] [command]\n\nGemini CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.',
+      `Usage: ${scriptName} [options] [command]\n\nChat CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.`,
     )
     .option('debug', {
       alias: 'd',
@@ -116,7 +121,7 @@ export async function parseArguments(
       description: 'Run in debug mode (open debug console with F12)',
       default: false,
     })
-    .command('$0 [query..]', 'Launch Gemini CLI', (yargsInstance) =>
+    .command('$0 [query..]', 'Launch Chat CLI', (yargsInstance) =>
       yargsInstance
         .positional('query', {
           description:
@@ -229,8 +234,8 @@ export async function parseArguments(
           description:
             'Resume a previous session. Use "latest" for most recent or index number (e.g. --resume 5)',
           coerce: (value: string): string => {
-            // When --resume passed with a value (`gemini --resume 123`): value = "123" (string)
-            // When --resume passed without a value (`gemini --resume`): value = "" (string)
+            // When --resume passed with a value (`chat --resume 123`): value = "123" (string)
+            // When --resume passed without a value (`chat --resume`): value = "" (string)
             // When --resume not passed at all: this `coerce` function is not called at all, and
             //   `yargsInstance.argv.resume` is undefined.
             if (value === '') {

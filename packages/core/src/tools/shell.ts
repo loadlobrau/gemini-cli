@@ -40,6 +40,7 @@ import {
   stripShellWrapper,
   parseCommandDetails,
   hasRedirection,
+  escapeShellArg,
 } from '../utils/shell-utils.js';
 import { SHELL_TOOL_NAME } from './tool-names.js';
 import type { MessageBus } from '../confirmation-bus/message-bus.js';
@@ -185,7 +186,8 @@ export class ShellToolInvocation extends BaseToolInvocation<
             // wrap command to append subprocess pids (via pgrep) to temporary file
             let command = strippedCommand.trim();
             if (!command.endsWith('&')) command += ';';
-            return `{ ${command} }; __code=$?; pgrep -g 0 >${tempFilePath} 2>&1; exit $__code;`;
+            const escapedTempFilePath = escapeShellArg(tempFilePath, 'bash');
+            return `{ ${command} }; __code=$?; pgrep -g 0 >${escapedTempFilePath} 2>&1; exit $__code;`;
           })();
 
       const cwd = this.params.dir_path
