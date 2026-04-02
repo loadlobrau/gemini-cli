@@ -15,6 +15,8 @@ requests sent from `packages/cli`. For a general overview of Gemini CLI, see the
   modular GEMINI.md import feature using @file.md syntax.
 - **[Policy Engine](../reference/policy-engine.md):** Use the Policy Engine for
   fine-grained control over tool execution.
+- **[GPT CLI feasibility](./gpt-cli-feasibility.md):** Assessment of what is
+  required to support ChatGPT/OpenAI calls in this codebase.
 
 ## Role of the core
 
