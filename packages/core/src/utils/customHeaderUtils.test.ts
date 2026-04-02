@@ -88,4 +88,18 @@ describe('parseCustomHeaders', () => {
       Authorization: 'Bearer abc',
     });
   });
+
+  it('should drop header names with invalid bytes', () => {
+    const input = 'X-Good: ok, Bad Header: nope, Another	Bad: nope';
+    expect(parseCustomHeaders(input)).toEqual({
+      'X-Good': 'ok',
+    });
+  });
+
+  it('should drop header values with CRLF characters', () => {
+    const input = 'X-Good: ok, X-Bad: hello\r\nInjected: yep';
+    expect(parseCustomHeaders(input)).toEqual({
+      'X-Good': 'ok',
+    });
+  });
 });

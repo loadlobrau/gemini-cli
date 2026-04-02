@@ -34,6 +34,14 @@ export function parseCustomHeaders(
       continue;
     }
 
+    // Prevent header injection through CRLF and invalid header name bytes.
+    if (/[^!#$%&'*+.^_`|~0-9A-Za-z-]/.test(name)) {
+      continue;
+    }
+    if (/[\r\n]/.test(value)) {
+      continue;
+    }
+
     headers[name] = value;
   }
 

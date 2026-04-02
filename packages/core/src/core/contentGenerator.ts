@@ -103,6 +103,7 @@ export async function createContentGeneratorConfig(
   const geminiApiKey =
     apiKey ||
     process.env['GEMINI_API_KEY'] ||
+    process.env['OPENAI_API_KEY'] ||
     (await loadApiKey()) ||
     undefined;
   const googleApiKey = process.env['GOOGLE_API_KEY'] || undefined;
@@ -169,8 +170,13 @@ export async function createContentGenerator(
     const userAgent = `GeminiCLI/${version}/${model} (${process.platform}; ${process.arch})`;
     const customHeadersMap = parseCustomHeaders(customHeadersEnv);
     const apiKeyAuthMechanism =
-      process.env['GEMINI_API_KEY_AUTH_MECHANISM'] || 'x-goog-api-key';
+      process.env['GEMINI_API_KEY_AUTH_MECHANISM'] ||
+      (process.env['OPENAI_API_KEY'] ? 'bearer' : 'x-goog-api-key');
     const apiVersionEnv = process.env['GOOGLE_GENAI_API_VERSION'];
+    const baseUrlEnv =
+      process.env['GOOGLE_GEMINI_BASE_URL'] ||
+      process.env['OPENAI_BASE_URL'] ||
+      undefined;
 
     const baseHeaders: Record<string, string> = {
       ...customHeadersMap,
@@ -214,7 +220,10 @@ export async function createContentGenerator(
           'x-gemini-api-privileged-user-id': `${installationId}`,
         };
       }
-      const httpOptions = { headers };
+      const httpOptions = {
+        headers,
+        ...(baseUrlEnv && { baseUrl: baseUrlEnv }),
+      };
 
       const googleGenAI = new GoogleGenAI({
         apiKey: config.apiKey === '' ? undefined : config.apiKey,
